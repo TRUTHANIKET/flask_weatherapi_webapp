@@ -1,1 +1,119 @@
+Main.py
 
+
+
+
+import requests,json,math
+from flask import Flask,render_template,request
+app = Flask(__name__)
+apikey="fa791aa0bc78403e28c531420d5ff78a"
+
+base="https://api.openweathermap.org/data/2.5/weather?q="
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/',methods=['POST'])
+def home():
+   
+    city=request.form['city']
+    final=base+city+"&appid="+apikey
+    fetching=requests.get(final)
+    data=fetching.json()
+    weather="the Weather report tells that there is",data['weather'][0]['main']," in ",city 
+    temp= "The temprature is ",math.ceil((data['main']['temp'])-273.15),"° celcius in ",city 
+   
+    
+    return render_template('index.html',weather=weather,temp=temp)
+
+
+if __name__=="__main__":
+    app.run(debug=True)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    Index.html
+    <!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Weather checkar</title>
+  </head>
+  <body>
+    <div class="container my-5">
+        <h1>Yo , wassap</h1>
+
+    </div>
+    <div class="container my-8">
+        
+        <form class="row g-3" action="." method="post">
+            <div class="col-auto">
+              <label for="staticEmail2" class="visually-hidden">Email</label>
+              <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="Enter city">
+            </div>
+            <div class="col-auto">
+              <label for="city" class="visually-hidden">City</label>
+              <input type="text" name="city" class="form-control" id="city" placeholder="City">
+            </div>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-primary mb-3">Search</button>
+            </div>
+          </form>
+    </div>
+
+    <div class="container my-5">
+<!-- <h1 class="display-6">{{city}}</h1> -->
+<h1 class="display-6">{{weather}}</h1>
+<h1 class="display-6">{{temp}}</h1>
+
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>
+
+
+
+
+
+weather.py-------
+
+import requests,json,math
+
+apikey="fa791aa0bc78403e28c531420d5ff78a"
+cityname=input("enter the city name to get the weather data\n")
+base="https://api.openweathermap.org/data/2.5/weather?q="
+final=base+cityname+"&appid="+apikey
+fetching=requests.get(final)
+data=fetching.json()
+if(data['cod']=='404'):
+    print(f"the Entered city {cityname} does not exit in our data-base")
+else:
+    print("the Weather report tells that there is",data['weather'][0]['main']," in ",cityname )
+    
+    print("The temprature is ",math.ceil((data['main']['temp'])-273.15),"° celcius in ",cityname )
