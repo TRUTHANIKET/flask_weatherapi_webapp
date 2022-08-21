@@ -117,3 +117,29 @@ else:
     print("the Weather report tells that there is",data['weather'][0]['main']," in ",cityname )
     
     print("The temprature is ",math.ceil((data['main']['temp'])-273.15),"° celcius in ",cityname )
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    try2.api
+    
+import requests,json,math
+
+
+apikey="796cae83f73746dda3f63937222108"
+cityname=input("enter the city name to get the weather data\n")
+baseurl="http://api.weatherapi.com/v1/current.json?key="
+base="https://api.openweathermap.org/data/2.5/weather?q="
+final=baseurl+apikey+"&q="+cityname+"&aqi=no"
+fetching=requests.get(final)
+data=fetching.json()
+print(data['current']['condition']['text'])
+print(data['current']['temp_c'])
