@@ -143,3 +143,57 @@ fetching=requests.get(final)
 data=fetching.json()
 print(data['current']['condition']['text'])
 print(data['current']['temp_c'])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+try2with icon:
+import requests,json,math
+from flask import Flask,render_template,request
+app = Flask(__name__)
+apikey="78a4741ec4ee6438b4bd43a1e7cd8ba3"
+apikay="796cae83f73746dda3f63937222108"
+
+base="https://api.openweathermap.org/data/2.5/weather?q="
+baseurl="http://api.weatherapi.com/v1/current.json?key="
+
+
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/',methods=['POST'])
+def home():
+
+   
+    city=request.form['city']
+    final=base+city+"&appid="+apikey
+    fetching=requests.get(final)
+    data=fetching.json()
+    finalforicon=baseurl+apikay+"&q="+city+"&aqi=no"
+    fetchicon=requests.get(finalforicon)
+    dataicon=fetchicon.json()
+    weather=data['weather'][0]['main'] 
+    
+    icon=(dataicon['current']['condition']['icon'])
+    temp=math.ceil((data['main']['temp'])-273.15)
+    # ,"° celcius in ",city 
+   
+    
+    return render_template('index.html',weather=weather,temp=temp,city=city,icon=icon)
+
+
+if __name__=="__main__":
+    app.run(debug=True)
